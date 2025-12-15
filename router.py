@@ -100,23 +100,23 @@ class StudentRouter(BaseHTTPRequestHandler):
             student_id = int(self.path.split("/")[-1])
             return update_student(self, student_id)
 
-        # Teacher UPDATE
-        if self.path.startswith("/api/teachers/"):
-            teacher_id = int(self.path.split("/")[-1])
-            return update_teacher(self, teacher_id)
+        # # Teacher UPDATE
+        # if self.path.startswith("/api/teachers/"):
+        #     teacher_id = int(self.path.split("/")[-1])
+        #     return update_teacher(self, teacher_id)
 
         return send_404(self)
 
-    def do_DELETE(self):
-        # Student DELETE
-        if self.path.startswith("/api/students/"):
-            student_id = int(self.path.split("/")[-1])
-            return delete_student(self, student_id)
+    # def do_DELETE(self):
+    #     # Student DELETE
+    #     if self.path.startswith("/api/students/"):
+    #         student_id = int(self.path.split("/")[-1])
+    #         return delete_student(self, student_id)
 
-        # Teacher DELETE
-        if self.path.startswith("/api/teachers/"):
-            teacher_id = int(self.path.split("/")[-1])
-            return delete_teacher(self, teacher_id)
+    #     # Teacher DELETE
+    #     if self.path.startswith("/api/teachers/"):
+    #         teacher_id = int(self.path.split("/")[-1])
+    #         return delete_teacher(self, teacher_id)
 
         return send_404(self)
 
