@@ -21,8 +21,8 @@ curl -X GET "https://cautious-lamp-q7jv975q56xjh9r67-8000.app.github.dev/api/tea
 curl -X POST "https://cautious-lamp-q7jv975q56xjh9r67-8000.app.github.dev/api/students" \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Mint Johnson",
-    "email": "mint@example.com",
+    "name": "sam Johnson",
+    "email": "jhonson@example.com",
     "course": "Computer Science",
     "year": 2
   }'
@@ -32,7 +32,7 @@ curl -X POST "https://cautious-lamp-q7jv975q56xjh9r67-8000.app.github.dev/api/st
   -H "Content-Type: application/json" \
   -d '{
     "name": "michel simron",
-    "email": "michel@example.com",
+    "email": "simron@example.com",
     "subject": "Mathematics"
   }'
 
@@ -43,6 +43,7 @@ curl -X POST "https://cautious-lamp-q7jv975q56xjh9r67-8000.app.github.dev/api/ma
   -d '{
     "student_id": 1,
     "year": "1st year",
+    "subject": "maths",
     "marks": 75
   }'
 
@@ -53,6 +54,7 @@ curl -X POST "https://cautious-lamp-q7jv975q56xjh9r67-8000.app.github.dev/api/ma
   -d '{
     "student_id": 1,
     "year": "2nd year",
+    "subject":"science",
     "marks": 80
   }'
 
