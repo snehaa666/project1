@@ -1,42 +1,42 @@
-import { editTeacher, deleteTeacherAction } 
-  from "../controllers/teacherController.js";
-
 import { $ } from "../utils/dom.js";
+import { editTeacher, deleteTeacherAction } from "../controllers/teacherController.js";
 
-export function renderTeacherTable(teachers = []) {
-  const tbody = $("teachersTableBody");
-  tbody.innerHTML = "";
+// Renders the list of teachers into an HTML table
+export function renderTeacherTable(teachers) {
+  const body = $("teachersTableBody");
+  const noTeachers = $("noTeachers");
 
-  if (!teachers.length) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="text-center">No teachers found</td>
-      </tr>
-    `;
+  body.innerHTML = "";
+
+  if (teachers.length === 0) {
+    noTeachers.style.display = "block";
     return;
   }
 
-  teachers.forEach((teacher) => {
-    const tr = document.createElement("tr");
+  noTeachers.style.display = "none";
 
-    tr.innerHTML = `
-      <td>${teacher.id}</td>
-      <td>${teacher.name}</td>
-      <td>${teacher.email}</td>
-      <td>${teacher.subject}</td>
-      <td>${teacher.experience}</td>
-      <td>
-        <button class="btn btn-sm btn-primary edit-btn">Edit</button>
-        <button class="btn btn-sm btn-danger delete-btn">Delete</button>
+  teachers.forEach(teacher => {
+    const row = document.createElement("tr");
+    row.className = "border-b";
+
+    row.innerHTML = `
+      <td class="px-3 py-2">${teacher.id}</td>
+      <td class="px-3 py-2">${teacher.name}</td>
+      <td class="px-3 py-2">${teacher.email}</td>
+      <td class="px-3 py-2">${teacher.subject}</td>
+      <td class="px-3 py-2">${teacher.department}</td>
+      <td class="px-3 py-2 flex space-x-2">
+        <button class="bg-yellow-400 hover:bg-yellow-500 text-black py-1 px-3 rounded"
+          data-edit="${teacher.id}">Edit</button>
+
+        <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+          data-delete="${teacher.id}">Delete</button>
       </td>
     `;
 
-    tr.querySelector(".edit-btn")
-      .addEventListener("click", () => editTeacher(teacher.id));
+    row.querySelector("[data-edit]").onclick = () => editTeacher(teacher.id);
+    row.querySelector("[data-delete]").onclick = () => deleteTeacherAction(teacher.id);
 
-    tr.querySelector(".delete-btn")
-      .addEventListener("click", () => deleteTeacherAction(teacher.id));
-
-    tbody.appendChild(tr);
+    body.appendChild(row);
   });
 }

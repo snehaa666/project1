@@ -7,8 +7,9 @@ import {
 } from "../services/teacherService.js";
 
 // import { showAlert } from "../components/Alert.js";
-import { renderTeacherTable } from "frontend/assets/js/components/TeacherTable.js";
-import { resetForm, fillForm } from "frontend/assets/js/components/TeacherForm.js";
+import { renderTeacherTable } from "../components/TeacherTable.js";
+import { resetForm, fillForm } from "../components/TeacherForm.js";
+
 
 import { setState, getState } from "../state/store.js";
 import { $ } from "../utils/dom.js";
@@ -60,3 +61,24 @@ export async function loadTeachers() {
   spinner.style.display = "none";
   table.style.display = "block";
 }
+// Called when Edit button is clicked
+export function editTeacher(id) {
+  const { teachers } = getState();
+  const teacher = teachers.find(t => t.id === id);
+
+  if (!teacher) return;
+
+  setState({ editingId: id });
+  fillForm(teacher);
+}
+
+// Called when Delete button is clicked
+export async function deleteTeacherAction(id) {
+  if (!confirm("Are you sure you want to delete this teacher?")) return;
+
+  await apiDelete(id);
+  loadTeachers();
+  resetForm();
+  setState({ editingId: null });
+}
+
