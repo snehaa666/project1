@@ -13,6 +13,7 @@ async function safeJson(res) {
 // Get all teachers
 export async function apiGetAll() {
   const res = await fetch(API_URL);
+  console.log(res)
   if (!res.ok) return [];
   return safeJson(res);
 }

@@ -31,7 +31,8 @@ from core.responses import send_404
 from core.middleware import add_cors_headers
 
 
-FRONTEND_ROUTES = {"/", "/home", "/students", "/docs"}
+FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/docs"}
+
 
 
 def handle_ui_routes(handler, path):
@@ -99,7 +100,7 @@ class StudentRouter(BaseHTTPRequestHandler):
         if path == "/api/marks":
             return get_all_marks(self)
 
-        if path.startswith("/api/marks/student/"):
+        if path.startswith("/api/marks/students/"):
             try:
                 student_id = int(path.split("/")[-1])
                 return get_marks_by_student(self, student_id)

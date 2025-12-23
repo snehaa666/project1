@@ -3,7 +3,7 @@ import { $, createElement } from "../utils/dom.js";
 // Resets the input form to its default state for creating a new teacher
 export function resetForm() {
   // Reset the entire form
-  $("teacherForm").reset();
+  $("teachersForm").reset();
 
   // Change the submit button text back to "Add Teacher"
   $("submitBtn").textContent = "Add Teacher";
@@ -18,7 +18,7 @@ export function fillForm(teacher) {
   $("name").value = teacher.name;
   $("email").value = teacher.email;
   $("subject").value = teacher.subject;
-  $("department").value = teacher.department;
+
 
   // Change the submit button text
   $("submitBtn").textContent = "Update Teacher";

@@ -37,14 +37,12 @@ export function apiCreate(data) {
 export function apiUpdate(id, data) {
   return fetch(`${API_URL}/${id}`, {
     method: "PUT",
- 
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 }
 
 // Delete a student
-export async function apiDelete(id) {
-  const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-  return res.ok;
+export function apiDelete(id) {
+  return fetch(`${API_URL}/${id}`, { method: "DELETE" });
 }

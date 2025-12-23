@@ -1,12 +1,12 @@
-import { 
-    apiGetAll, 
-    apiGetOne, 
-    apiCreate, 
-    apiUpdate, 
-    apiDelete 
+import {
+  apiGetAll,
+  apiGetOne,
+  apiCreate,
+  apiUpdate,
+  apiDelete
 } from "../services/studentService.js";
 
-// import { showAlert } from "../components/Alert.js";
+import { showAlert } from "../components/Alert.js";
 import { renderStudentTable } from "../components/StudentTable.js";
 import { resetForm, fillForm } from "../components/StudentForm.js";
 
@@ -72,7 +72,12 @@ export async function loadStudents() {
   // Store the retrieved student array in the application's global state
   setState({ students });
   // Render the fetched student data into the HTML table structure
-  renderStudentTable(students);
+  // renderStudentTable(students);
+  renderStudentTable(students, {
+    onEdit: editStudent,
+    onDelete: deleteStudentAction
+  });
+
 
   // Hide the spinner and show the table now that the data is loaded and displayed
   spinner.style.display = "none";
@@ -116,7 +121,7 @@ export async function deleteStudentAction(id) {
   if (!confirm("Delete this student?")) return;
 
   const res = await apiDelete(id);
- 	if (res.ok) {
+  if (res.ok) {
     showAlert("Deleted!");
     loadStudents();
   }

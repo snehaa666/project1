@@ -17,7 +17,9 @@ import { $ } from "../utils/dom.js";
 // Setup event listeners and load initial data
 export function initTeacherController() {
   // Load teachers on start
-  loadTeachers();
+  const teacherForm = $("teacherForm");
+
+  if (!teacherForm) return; // ✅ prevents crash
 
   // --- Handle Form Submissions ---
   $("teacherForm").addEventListener("submit", async (e) => {
