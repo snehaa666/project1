@@ -1,27 +1,18 @@
-// Base API URL from env.js
 const API_URL = window.ENV.API_BASE_URL_TEACHERS;
 
-// Safely parse JSON
+// Safe JSON parsing
 async function safeJson(res) {
   try {
     return await res.json();
   } catch {
-    return null;
+    return [];
   }
 }
 
 // Get all teachers
 export async function apiGetAll() {
   const res = await fetch(API_URL);
-  console.log(res)
-  if (!res.ok) return [];
-  return safeJson(res);
-}
-
-// Get one teacher
-export async function apiGetOne(id) {
-  const res = await fetch(`${API_URL}/${id}`);
-  if (!res.ok) return null;
+  if (!res.ok) throw new Error("Failed to fetch teachers");
   return safeJson(res);
 }
 

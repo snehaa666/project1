@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student SPA</title>
+    <title>Student MGMT</title>
 
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" type="image/png">
 
-
-
+    
     <!-- Tailwind -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
@@ -27,17 +26,22 @@
         body {
             font-family: "Outfit", sans-serif;
             letter-spacing: 0.3px;
+            background-color:#d5e0a162;
+            
         }
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-300 min-h-screen flex flex-col">
 
+<header id="page-header" class=""></header>
+<div class=""container mx-auto flex flex-col gap-6 px-4 text-center></div>
     <!-- Environment variables -->
     <script src="/frontend/env.js"></script>
 
     <!-- Header -->
     <div id="header"></div>
+    
 
     <!-- SPA Root Container -->
     <main id="app" class="max-w-2xl mx-auto p-6 flex-grow"></main>

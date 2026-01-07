@@ -1,14 +1,13 @@
 import { $ } from "../utils/dom.js";
-import { editTeacher, deleteTeacherAction } from "../controllers/teacherController.js";
+// import { editTeacher, deleteTeacherAction } from "../controllers/teacherController.js";
 
-// Renders the list of teachers into an HTML table
-export function renderTeacherTable(teachers) {
+export function renderTeacherTable(teachers, { onEdit, onDelete }) {
   const body = $("teachersTableBody");
   const noTeachers = $("noTeachers");
 
   body.innerHTML = "";
 
-  if (teachers.length === 0) {
+  if (!teachers || teachers.length === 0) {
     noTeachers.style.display = "block";
     return;
   }
@@ -23,18 +22,19 @@ export function renderTeacherTable(teachers) {
       <td class="px-3 py-2">${teacher.id}</td>
       <td class="px-3 py-2">${teacher.name}</td>
       <td class="px-3 py-2">${teacher.email}</td>
-      <td class="px-3 py-2">${teacher.subject}</td>   
+      <td class="px-3 py-2">${teacher.subject}</td>
       <td class="px-3 py-2 flex space-x-2">
-        <button class="bg-yellow-400 hover:bg-yellow-500 text-black py-1 px-3 rounded"
-          data-edit="${teacher.id}">Edit</button>
-
-        <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
-          data-delete="${teacher.id}">Delete</button>
+        <button data-edit class="bg-yellow-400 hover:bg-yellow-500 text-black py-1 px-3 rounded">
+          Edit
+        </button>
+        <button data-delete class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">
+          Delete
+        </button>
       </td>
     `;
 
-    row.querySelector("[data-edit]").onclick = () => editTeacher(teacher.id);
-    row.querySelector("[data-delete]").onclick = () => deleteTeacherAction(teacher.id);
+    row.querySelector["data-edit"].onclick = () =>  onEdit(teacher.id);
+    row.querySelector["data-delete"].onclick = () =>  onDelete(teacher.id);
 
     body.appendChild(row);
   });
