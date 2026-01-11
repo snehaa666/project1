@@ -10,68 +10,76 @@ import { resetForm, fillForm } from "../components/TeacherForm.js";
 import { setState, getState } from "../state/store.js";
 import { $ } from "../utils/dom.js";
 
-// Initialize controller
 export function initTeacherController() {
-  const teacherForm = $("teacherForm");
-  if (!teacherForm) return;
+  // FIX: Match HTML id="TeacherForm"
+  const teacherForm = $("TeacherForm"); 
+  if (!teacherForm) {
+    console.error("Form not found!");
+    return;
+  }
 
-  // ✅ LOAD TEACHERS ON PAGE LOAD
   loadTeachers();
 
-  // Handle form submit
   teacherForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const data = {
       name: $("name").value.trim(),
       email: $("email").value.trim(),
-      subject: $("subject").value.trim()
+      subject: $("Subject").value.trim() // FIX: Match HTML id="Subject"
     };
 
     const { editingId } = getState();
 
-    if (editingId) {
-      await updateTeacher(editingId, data);
-    } else {
-      await createNewTeacher(data);
+    try {
+      if (editingId) {
+        await updateTeacher(editingId, data);
+      } else {
+        await createNewTeacher(data);
+      }
+    } catch (err) {
+      alert("Failed to save teacher data.");
     }
   });
 
-  // Cancel edit
   $("cancelBtn").addEventListener("click", () => {
     setState({ editingId: null });
     resetForm();
   });
 }
 
-// Fetch all teachers
 export async function loadTeachers() {
   const spinner = $("loadingSpinner");
-  const table = $("teachersTableContainer");
+  const table = $("TeacherTableContainer"); // FIX: Match HTML ID
 
-  spinner.style.display = "block";
-  table.style.display = "none";
+  if (spinner) spinner.style.display = "block";
+  if (table) table.style.display = "none";
 
   try {
     const teachers = await apiGetAll();
     setState({ teachers });
-    renderTeacherTable(teachers);
+    
+    // FIX: Pass the actions so the buttons in the table actually work
+    renderTeacherTable(teachers, { 
+      onEdit: editTeacher, 
+      onDelete: deleteTeacherAction 
+    });
+    
   } catch (error) {
     console.error("Error loading teachers:", error);
   } finally {
-    spinner.style.display = "none";
-    table.style.display = "block";
+    // This finally block will now run because we fixed the errors above
+    if (spinner) spinner.style.display = "none";
+    if (table) table.style.display = "block";
   }
 }
 
-// Create teacher
 async function createNewTeacher(data) {
   await apiCreate(data);
   await loadTeachers();
   resetForm();
 }
 
-// Update teacher
 async function updateTeacher(id, data) {
   await apiUpdate(id, data);
   await loadTeachers();
@@ -79,22 +87,25 @@ async function updateTeacher(id, data) {
   setState({ editingId: null });
 }
 
-// Edit handler
 export function editTeacher(id) {
   const { teachers } = getState();
-  const teacher = teachers.find(t => t.id === id);
+  // Ensure we compare the right types (string vs number)
+  const teacher = teachers.find(t => String(t.id) === String(id));
   if (!teacher) return;
 
   setState({ editingId: id });
   fillForm(teacher);
 }
 
-// Delete handler
 export async function deleteTeacherAction(id) {
   if (!confirm("Are you sure you want to delete this teacher?")) return;
 
-  await apiDelete(id);
-  await loadTeachers();
-  resetForm();
-  setState({ editingId: null });
+  try {
+    await apiDelete(id);
+    await loadTeachers();
+    resetForm();
+    setState({ editingId: null });
+  } catch (err) {
+    console.error("Delete failed", err);
+  }
 }

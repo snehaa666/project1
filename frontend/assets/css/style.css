@@ -1,8 +1,11 @@
-.about {
-    color: gray;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-.show{
-    background:linear-gradient(rgba(0.0.0.0.6), rgba(0.0.0.0.6)),url('../pages/college.jpg')
-    width: 100px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure no default margins on the body are pushing your content */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }

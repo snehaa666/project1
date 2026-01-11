@@ -3,7 +3,7 @@
 # =========================
 
 from datetime import datetime
-from database.connection import get_connection
+from .connection import get_connection
 
 
 def db_create_mark(data):

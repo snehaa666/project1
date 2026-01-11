@@ -10,6 +10,7 @@ from controllers.students import (
     delete_student,
 )
 
+
 from controllers.teachers import (
     get_all_teachers,
     get_teacher,
@@ -24,6 +25,14 @@ from controllers.marks import (
     get_all_marks,
     update_mark,
     delete_mark,
+)
+
+from controllers.courses import (
+    get_all_courses,
+    get_course,
+    create_course,
+    update_course,
+    delete_course,
 )
 
 from core.static import serve_static
@@ -93,6 +102,13 @@ class StudentRouter(BaseHTTPRequestHandler):
                 return get_teacher(self, int(path.split("/")[-1]))
             except ValueError:
                 return send_404(self)
+            
+        if path == "/api/courses":
+            return get_all_courses(self)
+
+        if path.startswith("/api/courses/"):
+            course_id = int(path.split("/")[-1])
+            return get_course(self, course_id)
 
         # --------------------
         # MARKS
@@ -118,6 +134,9 @@ class StudentRouter(BaseHTTPRequestHandler):
 
         if self.path == "/api/marks":
             return add_mark(self)
+        # COURSES
+        if self.path == "/api/courses":
+            return create_course(self)
 
         return send_404(self)
 
@@ -130,6 +149,10 @@ class StudentRouter(BaseHTTPRequestHandler):
 
         if self.path.startswith("/api/marks/"):
             return update_mark(self, int(self.path.split("/")[-1]))
+        
+        if self.path.startswith("/api/courses/"):
+            course_id = int(self.path.split("/")[-1])
+            return update_course(self, course_id)
 
         return send_404(self)
 
@@ -142,6 +165,10 @@ class StudentRouter(BaseHTTPRequestHandler):
 
         if self.path.startswith("/api/marks/"):
             return delete_mark(self, int(self.path.split("/")[-1]))
+        
+        if self.path.startswith("/api/courses/"):
+            course_id = int(self.path.split("/")[-1])
+            return delete_course(self, course_id)
 
         return send_404(self)
 

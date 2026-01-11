@@ -1,28 +1,31 @@
-import { $, createElement } from "../utils/dom.js";
+import { $ } from "../utils/dom.js";
 
-// Resets the input form to its default state for creating a new teacher
+// Resets the input form to its default state
 export function resetForm() {
-  // Reset the entire form
-  $("teachersForm").reset();
+  // FIX: Matches id="TeacherForm" in HTML
+  const form = $("TeacherForm");
+  if (form) form.reset();
 
-  // Change the submit button text back to "Add Teacher"
-  $("submitBtn").textContent = "Add Teacher";
+  const submitBtn = $("submitBtn");
+  if (submitBtn) submitBtn.textContent = "Add Teacher";
 
-  // Hide the "Cancel" button
-  $("cancelBtn").style.display = "none";
+  // FIX: Uses 'hidden' class to match Tailwind patterns
+  const cancelBtn = $("cancelBtn");
+  if (cancelBtn) cancelBtn.classList.add("hidden");
 }
 
-// Populates the input form fields with data from a selected teacher object (for editing)
+// Populates the form fields for editing
 export function fillForm(teacher) {
-  // Fill each input field with teacher data
-  $("name").value = teacher.name;
-  $("email").value = teacher.email;
-  $("subject").value = teacher.subject;
+  // FIX: Ensure these match the 'id' attributes in your HTML exactly
+  if ($("name")) $("name").value = teacher.name;
+  if ($("email")) $("email").value = teacher.email;
+  
+  // FIX: Your HTML used id="Subject" (Capital S)
+  if ($("Subject")) $("Subject").value = teacher.subject;
 
+  const submitBtn = $("submitBtn");
+  if (submitBtn) submitBtn.textContent = "Update Teacher";
 
-  // Change the submit button text
-  $("submitBtn").textContent = "Update Teacher";
-
-  // Show the "Cancel" button
-  $("cancelBtn").style.display = "inline-block";
+  const cancelBtn = $("cancelBtn");
+  if (cancelBtn) cancelBtn.classList.remove("hidden");
 }

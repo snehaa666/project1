@@ -36,6 +36,17 @@ def init_database():
         )
     """)
 
+    
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS courses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            code TEXT,
+            created_at TEXT,
+            updated_at TEXT
+        )
+    """)
+
     # ------------------------------
 # MARKS TABLE (NEW)
 # ------------------------------
