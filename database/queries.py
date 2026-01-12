@@ -49,3 +49,55 @@ def db_delete(student_id):
     conn.commit()
     conn.close()
     return student
+# COURSES CRUD
+# -----------------------------
+
+def courses_get_all():
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM courses ORDER BY id DESC").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def courses_get_one(course_id: int):
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM courses WHERE id = ?", (course_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+def courses_create(data: dict):
+    conn = get_connection()
+    now = datetime.now().isoformat()
+    cur = conn.execute(
+        "INSERT INTO courses (title, code, created_at) VALUES (?, ?, ?)",
+        (data["title"], data.get("code"), now)
+    )
+    conn.commit()
+    new_id = cur.lastrowid
+    conn.close()
+    return courses_get_one(new_id)
+
+def courses_update(course_id: int, data: dict):
+    conn = get_connection()
+    now = datetime.now().isoformat()
+    conn.execute("""
+        UPDATE courses
+        SET title=?, code=?, updated_at=?
+        WHERE id=?
+    """, (data["title"], data.get("code"), now, course_id))
+    conn.commit()
+    conn.close()
+    return courses_get_one(course_id)
+
+def courses_delete(course_id: int):
+    course = courses_get_one(course_id)
+    if not course:
+        return None
+
+    conn = get_connection()
+    conn.execute("DELETE FROM courses WHERE id=?", (course_id,))
+    conn.commit()
+    conn.close()
+    return course
+
+
+# -----------------------------

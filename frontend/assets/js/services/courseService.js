@@ -1,55 +1,54 @@
-// Resolve API base safely (works for students, courses, or any module)
-const API_ROOT = window.ENV.API_BASE_URL.replace(/\/(students|courses)$/, "");
-const API_URL = `${API_ROOT}/courses`;
+// 1. Safe access: Fallback to an empty string if window.ENV or API_BASE_URL is missing
+const BASE = (window.ENV?.API_BASE_URL || "").replace("/students", "");
+const API_URL = BASE ? `${BASE}/courses` : "";
 
-// Safely parse JSON without crashing
 async function safeJson(res) {
-  try {
-    return await res.json();
-  } catch {
-    return null;
+  try { 
+    return await res.json(); 
+  } catch { 
+    return null; 
   }
 }
 
-// Get all courses
 export async function apiGetAll() {
+  // Guard clause: Don't fetch if the URL isn't ready
+  if (!API_URL) return [];
+  
   const res = await fetch(API_URL);
   if (!res.ok) return [];
-  return await safeJson(res);
+  return safeJson(res);
 }
 
-// Get one course by ID
 export async function apiGetOne(id) {
+  if (!API_URL) return null;
+  
   const res = await fetch(`${API_URL}/${id}`);
   if (!res.ok) return null;
-  return await safeJson(res);
+  return safeJson(res);
 }
 
-// Create new course
 export function apiCreate(data) {
+  if (!API_URL) return Promise.reject("API_URL is missing");
+  
   return fetch(API_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 }
 
-// Update existing course
 export function apiUpdate(id, data) {
+  if (!API_URL) return Promise.reject("API_URL is missing");
+  
   return fetch(`${API_URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 }
 
-// Delete course
 export function apiDelete(id) {
-  return fetch(`${API_URL}/${id}`, {
-    method: "DELETE"
-  });
+  if (!API_URL) return Promise.reject("API_URL is missing");
+  
+  return fetch(`${API_URL}/${id}`, { method: "DELETE" });
 }
