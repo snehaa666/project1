@@ -1,6 +1,5 @@
 // 1. Safe access: Fallback to an empty string if window.ENV or API_BASE_URL is missing
-const BASE = (window.ENV?.API_BASE_URL || "").replace("/students", "");
-const API_URL = BASE ? `${BASE}/courses` : "";
+const API_URL = window.ENV.API_BASE_URL_COURSES;
 
 async function safeJson(res) {
   try { 

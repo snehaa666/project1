@@ -9,6 +9,7 @@ export function resetCourseForm() {
 export function fillCourseForm(course) {
   $("title").value = course.title ?? "";
   $("code").value = course.code ?? "";
+  $("fees").value = course.fees ?? "";
   $("cancelBtn").classList.remove("hidden");
   $("submitBtn").textContent = "Update Course";
 }

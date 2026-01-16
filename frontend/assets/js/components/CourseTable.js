@@ -16,12 +16,13 @@ export function renderCourseTable(courses) {
   courses.forEach(c => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td class="px-3 py-2 border">${c.id}</td>
-      <td class="px-3 py-2 border">${c.title ?? ""}</td>
-      <td class="px-3 py-2 border">${c.code ?? ""}</td>
-      <td class="px-3 py-2 border">
-        <button class="text-blue-600 underline mr-3" data-edit="${c.id}">Edit</button>
-        <button class="text-red-600 underline" data-del="${c.id}">Delete</button>
+      <td class="px-3 py-2">${c.id}</td>
+      <td class="px-3 py-2">${c.title ?? ""}</td>
+      <td class="px-3 py-2">${c.code ?? ""}</td>
+      <td class="px-3 py-2">${c.fees ?? ""}</td>
+      <td class="px-3 py-2 border-space flex space-x-2">
+        <button class="bg-yellow-400 hover:bg-yellow-500 text-xs font-bold py-1 px-3 rounded" data-edit="${c.id}">Edit</button>
+        <button class="bg-red-500 hover:bg-red-600 text-xs font-bold text-white py-1 px-3 rounded" data-del="${c.id}">Delete</button>
       </td>
     `;
     body.appendChild(tr);

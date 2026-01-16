@@ -51,9 +51,12 @@ def db_delete(student_id):
     return student
 # COURSES CRUD
 # -----------------------------
+from datetime import datetime
+# Assuming get_connection is imported from your db config
 
 def courses_get_all():
     conn = get_connection()
+    # SELECT * will now include the new 'fees' column
     rows = conn.execute("SELECT * FROM courses ORDER BY id DESC").fetchall()
     conn.close()
     return [dict(r) for r in rows]
@@ -67,9 +70,10 @@ def courses_get_one(course_id: int):
 def courses_create(data: dict):
     conn = get_connection()
     now = datetime.now().isoformat()
+    # Added 'fees' to the column list and the VALUES parameters
     cur = conn.execute(
-        "INSERT INTO courses (title, code, created_at) VALUES (?, ?, ?)",
-        (data["title"], data.get("code"), now)
+        "INSERT INTO courses (title, code, fees, created_at) VALUES (?, ?, ?, ?)",
+        (data["title"], data.get("code"), data.get("fees"), now)
     )
     conn.commit()
     new_id = cur.lastrowid
@@ -79,11 +83,12 @@ def courses_create(data: dict):
 def courses_update(course_id: int, data: dict):
     conn = get_connection()
     now = datetime.now().isoformat()
+    # Added 'fees=?' to the SET clause
     conn.execute("""
         UPDATE courses
-        SET title=?, code=?, updated_at=?
+        SET title=?, code=?, fees=?, updated_at=?
         WHERE id=?
-    """, (data["title"], data.get("code"), now, course_id))
+    """, (data["title"], data.get("code"), data.get("fees"), now, course_id))
     conn.commit()
     conn.close()
     return courses_get_one(course_id)
@@ -98,6 +103,3 @@ def courses_delete(course_id: int):
     conn.commit()
     conn.close()
     return course
-
-
-# -----------------------------

@@ -8,11 +8,11 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-
 # ✅ USE AFTER DEFINITION
 def init_database():
     conn = get_connection()
 
+    # 1. Students Table
     conn.execute("""
         CREATE TABLE IF NOT EXISTS students (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,6 +25,7 @@ def init_database():
         )
     """)
 
+    # 2. Teachers Table
     conn.execute("""
         CREATE TABLE IF NOT EXISTS teachers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,37 +37,47 @@ def init_database():
         )
     """)
 
-    
+    # 3. Courses Table 
+    # (Including 'fees' here handles brand new database files)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS courses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             code TEXT,
+            fees REAL,
             created_at TEXT,
             updated_at TEXT
         )
     """)
 
-    # ------------------------------
-# MARKS TABLE (NEW)
-# ------------------------------
+    # 4. 🚀 MIGRATION: Force add 'fees' to EXISTING databases
+    # This prevents the "no column named fees" error if the DB file already existed
+    try:
+        conn.execute("ALTER TABLE courses ADD COLUMN fees REAL;")
+        print("✓ Migration: 'fees' column successfully added to existing table.")
+    except sqlite3.OperationalError:
+        # If the column is already there, it skips this to avoid crashing
+        print("ℹ Migration: 'fees' column already exists, skipping.")
+
+    # 5. Marks Table
     conn.execute("""
-    CREATE TABLE IF NOT EXISTS marks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        student_id INTEGER NOT NULL,
-        year TEXT NOT NULL,
-        subject TEXT NOT NULL,
-        marks INTEGER NOT NULL,
-        created_at TEXT,
-        updated_at TEXT,
-        FOREIGN KEY (student_id) REFERENCES students(id)
-    )
-""")
-
-
+        CREATE TABLE IF NOT EXISTS marks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            year TEXT NOT NULL,
+            subject TEXT NOT NULL,
+            marks INTEGER NOT NULL,
+            created_at TEXT,
+            updated_at TEXT,
+            FOREIGN KEY (student_id) REFERENCES students(id)
+        )
+    """)
 
     conn.commit()
     conn.close()
+    
+    print("✓ Database initialized with students, teachers, courses & marks tables")
 
-    # print("✓ Database initialized successfully")
-    print("✓ Database initialized with students, teachers & marks tables")
+# To run the initialization directly
+if __name__ == "__main__":
+    init_database()
