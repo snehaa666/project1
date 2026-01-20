@@ -8,6 +8,10 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def _column_exists(conn, table, column):
+    cols = conn.execute(f"PRAGMA table_info({table})").fetchall()
+    return any(c["name"] == column for c in cols)
+
 # ✅ USE AFTER DEFINITION
 def init_database():
     conn = get_connection()
@@ -72,6 +76,19 @@ def init_database():
             FOREIGN KEY (student_id) REFERENCES students(id)
         )
     """)
+   
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS enrollments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            course_id INTEGER NOT NULL,
+            enrolled_on TEXT,
+            created_at TEXT,
+            updated_at TEXT,
+            FOREIGN KEY(student_id) REFERENCES students(id),
+            FOREIGN KEY(course_id) REFERENCES courses(id)
+        )
+    """) 
 
     conn.commit()
     conn.close()

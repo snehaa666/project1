@@ -1,53 +1,41 @@
-// 1. Safe access: Fallback to an empty string if window.ENV or API_BASE_URL is missing
-const API_URL = window.ENV.API_BASE_URL_COURSES;
+const API_URL = "/api/courses";
 
 async function safeJson(res) {
-  try { 
-    return await res.json(); 
-  } catch { 
-    return null; 
+  try {
+    return await res.json();
+  } catch (_) {
+    return null;
   }
 }
 
-export async function apiGetAll() {
-  // Guard clause: Don't fetch if the URL isn't ready
-  if (!API_URL) return [];
-  
+export async function apiGetAllCourses() {
   const res = await fetch(API_URL);
   if (!res.ok) return [];
   return safeJson(res);
 }
 
-export async function apiGetOne(id) {
-  if (!API_URL) return null;
-  
+export async function apiGetCourse(id) {
   const res = await fetch(`${API_URL}/${id}`);
   if (!res.ok) return null;
   return safeJson(res);
 }
 
-export function apiCreate(data) {
-  if (!API_URL) return Promise.reject("API_URL is missing");
-  
+export function apiCreateCourse(data) {
   return fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 }
 
-export function apiUpdate(id, data) {
-  if (!API_URL) return Promise.reject("API_URL is missing");
-  
+export function apiUpdateCourse(id, data) {
   return fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 }
 
-export function apiDelete(id) {
-  if (!API_URL) return Promise.reject("API_URL is missing");
-  
+export function apiDeleteCourse(id) {
   return fetch(`${API_URL}/${id}`, { method: "DELETE" });
 }

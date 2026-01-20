@@ -2,7 +2,7 @@ from datetime import datetime
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
-
+# --- STUDENTS ---
 from controllers.students import (
     get_all_students,
     get_student,
@@ -11,7 +11,7 @@ from controllers.students import (
     delete_student,
 )
 
-
+# --- TEACHERS ---
 from controllers.teachers import (
     get_all_teachers,
     get_teacher,
@@ -20,6 +20,7 @@ from controllers.teachers import (
     delete_teacher,
 )
 
+# --- MARKS ---
 from controllers.marks import (
     add_mark,
     get_marks_by_student,
@@ -28,6 +29,7 @@ from controllers.marks import (
     delete_mark,
 )
 
+# --- COURSES ---
 from controllers.courses import (
     get_all_courses,
     get_course,
@@ -36,14 +38,21 @@ from controllers.courses import (
     delete_course,
 )
 
+# --- ENROLLMENTS (Added missing imports) ---
+from controllers.enrollments import (
+    get_all_enrollments,
+    get_enrollment,
+    create_enrollment,
+    delete_enrollment,
+)
+
 from core.static import serve_static
 from core.responses import send_404
 from core.middleware import add_cors_headers
 
-
-FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/docs"}
-
-
+# Added /profiles and /enrollments to fix the UI 404s
+# Add "/profiles" to this list to stop the 404 error
+FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/courses", "/profiles", "/enrollments"}
 
 def handle_ui_routes(handler, path):
     if path in FRONTEND_ROUTES:
@@ -55,6 +64,10 @@ def handle_ui_routes(handler, path):
         if stripped in FRONTEND_ROUTES:
             serve_static(handler, "frontend/pages/index.html")
             return True
+         # Serve assets at /assets/... -> frontend/assets/...
+    if path.startswith("/assets/"):
+        serve_static(handler, "frontend" + path)
+        return True
 
     if path.startswith("/frontend/"):
         serve_static(handler, path.lstrip("/"))
@@ -63,8 +76,36 @@ def handle_ui_routes(handler, path):
     if path == "/openapi.yaml":
         serve_static(handler, "openapi.yaml")
         return True
+    # Dynamic SPA routes (profiles pages)
+    # e.g. /profiles/1 should still load index.html and let the SPA router decide
+    if path.startswith("/profiles/"):
+        serve_static(handler, "frontend/pages/index.html")
+        return True
+
+    
 
     return False
+
+
+# -------------------------------
+# Helpers
+# -------------------------------
+
+def _last_path_id_or_404(handler, path):
+    """
+    Extract the last path segment and ensure it's a number.
+    If it's not a number, return None after sending 404 (no crash).
+    """
+    last = path.split("/")[-1]
+    if not last.isdigit():
+        send_404(handler)
+        return None
+    return int(last)
+
+# -------------------------------
+# MAIN ROUTER CLASS
+# -------------------------------
+
 
 
 class StudentRouter(BaseHTTPRequestHandler):
@@ -80,9 +121,7 @@ class StudentRouter(BaseHTTPRequestHandler):
         if handle_ui_routes(self, path):
             return
 
-        # --------------------
-        # STUDENTS
-        # --------------------
+        # API ROUTES
         if path == "/api/students":
             return get_all_students(self)
 
@@ -92,9 +131,6 @@ class StudentRouter(BaseHTTPRequestHandler):
             except ValueError:
                 return send_404(self)
 
-        # --------------------
-        # TEACHERS
-        # --------------------
         if path == "/api/teachers":
             return get_all_teachers(self)
 
@@ -108,12 +144,12 @@ class StudentRouter(BaseHTTPRequestHandler):
             return get_all_courses(self)
 
         if path.startswith("/api/courses/"):
-            course_id = int(path.split("/")[-1])
-            return get_course(self, course_id)
+            try:
+                course_id = int(path.split("/")[-1])
+                return get_course(self, course_id)
+            except ValueError:
+                return send_404(self)
 
-        # --------------------
-        # MARKS
-        # --------------------
         if path == "/api/marks":
             return get_all_marks(self)
 
@@ -124,53 +160,65 @@ class StudentRouter(BaseHTTPRequestHandler):
             except ValueError:
                 return send_404(self)
 
+        # ENROLLMENTS
+        if path == "/api/enrollments":
+            return get_all_enrollments(self)
+
+        if path.startswith("/api/enrollments/"):
+            try:
+                enrollment_id = int(path.split("/")[-1])
+                return get_enrollment(self, enrollment_id)
+            except ValueError:
+                return send_404(self)
+
+        # REPORTS
+        if path == "/api/reports/enrollments":
+            return get_enrollment_report(self)
+
         return send_404(self)
 
     def do_POST(self):
-        if self.path == "/api/students":
+        path = self.path # Fixed: Added local path variable
+        if path == "/api/students":
             return create_student(self)
-
-        if self.path == "/api/teachers":
+        if path == "/api/teachers":
             return create_teacher(self)
-
-        if self.path == "/api/marks":
+        if path == "/api/marks":
             return add_mark(self)
-        # COURSES
-        if self.path == "/api/courses":
+        if path == "/api/courses":
             return create_course(self)
-
+        if path == "/api/enrollments":
+            return create_enrollment(self)
         return send_404(self)
 
     def do_PUT(self):
-        if self.path.startswith("/api/students/"):
-            return update_student(self, int(self.path.split("/")[-1]))
-
-        if self.path.startswith("/api/teachers/"):
-            return update_teacher(self, int(self.path.split("/")[-1]))
-
-        if self.path.startswith("/api/marks/"):
-            return update_mark(self, int(self.path.split("/")[-1]))
-        
-        if self.path.startswith("/api/courses/"):
-            course_id = int(self.path.split("/")[-1])
-            return update_course(self, course_id)
-
+        path = self.path # Fixed: Added local path variable
+        if path.startswith("/api/students/"):
+            return update_student(self, int(path.split("/")[-1]))
+        if path.startswith("/api/teachers/"):
+            return update_teacher(self, int(path.split("/")[-1]))
+        if path.startswith("/api/marks/"):
+            return update_mark(self, int(path.split("/")[-1]))
+        if path.startswith("/api/courses/"):
+            return update_course(self, int(path.split("/")[-1]))
         return send_404(self)
 
     def do_DELETE(self):
-        if self.path.startswith("/api/students/"):
-            return delete_student(self, int(self.path.split("/")[-1]))
-
-        if self.path.startswith("/api/teachers/"):
-            return delete_teacher(self, int(self.path.split("/")[-1]))
-
-        if self.path.startswith("/api/marks/"):
-            return delete_mark(self, int(self.path.split("/")[-1]))
-        
-        if self.path.startswith("/api/courses/"):
-            course_id = int(self.path.split("/")[-1])
-            return delete_course(self, course_id)
-
+        path = self.path # Fixed: Added local path variable
+        if path.startswith("/api/students/"):
+            return delete_student(self, int(path.split("/")[-1]))
+        if path.startswith("/api/teachers/"):
+            return delete_teacher(self, int(path.split("/")[-1]))
+        if path.startswith("/api/marks/"):
+            return delete_mark(self, int(path.split("/")[-1]))
+        if path.startswith("/api/courses/"):
+            return delete_course(self, int(path.split("/")[-1]))
+        if path.startswith("/api/enrollments/"):
+            try:
+                enrollment_id = int(path.split("/")[-1])
+                return delete_enrollment(self, enrollment_id)
+            except ValueError:
+                return send_404(self)
         return send_404(self)
 
     def log_message(self, format, *args):

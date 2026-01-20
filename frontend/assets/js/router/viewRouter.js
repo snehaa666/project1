@@ -1,50 +1,155 @@
-import { initStudentController } from "../controllers/studentController.js";
-import { initTeacherController } from "../controllers/teacherController.js";
-import { initCourseController } from "../controllers/courseController.js";
-// Load a view into #app container
+// frontend/assets/js/router/viewRouter.js
+
 async function loadView(path) {
-  const html = await fetch(path).then(res => res.text());
+  const res = await fetch(path);
+
+  // If the view file is missing, show 404 view
+  if (!res.ok) {
+    const fallback = await fetch("/frontend/pages/404.html").then((r) => r.text());
+    document.querySelector("#app").innerHTML = fallback;
+    return;
+  }
+
+  const html = await res.text();
   document.querySelector("#app").innerHTML = html;
+
+  // If Mermaid is available, re-render diagrams after HTML injection
+  if (window.mermaid) {
+    try {
+      await window.mermaid.run({ querySelector: "#app .mermaid" });
+    } catch (e) {
+      console.warn("Mermaid render skipped:", e);
+    }
+  }
 }
 
-// Decide which view to load based on URL
 export async function router() {
-  const path = window.location.pathname;
+  // Normalize path: remove trailing slash (except "/")
+  let path = window.location.pathname;
+  if (path.length > 1) path = path.replace(/\/$/, "");
 
+  // --------------------
+  // HOME
+  // --------------------
   if (path === "/" || path === "/home") {
     await loadView("/frontend/pages/home.html");
+    return;
   }
 
-   else if (path === "/courses") {
-    await loadView("/frontend/pages/courses.html");
-    initCourseController();
-  }
-
-  else if (path === "/students") {
+  // --------------------
+  // STUDENTS (CRUD)
+  // --------------------
+  if (path === "/students") {
     await loadView("/frontend/pages/students.html");
-    initStudentController();
+    const mod = await import("../controllers/studentController.js");
+    mod.initStudentController();
+    return;
   }
 
-  else if (path === "/teachers") {              // ✅ Added Teacher route
+  // --------------------
+  // COURSES (CRUD)
+  // --------------------
+  if (path === "/courses") {
+    await loadView("/frontend/pages/courses.html");
+    const mod = await import("../controllers/courseController.js");
+    mod.initCourseController();
+    return;
+  }
+    // --------------------
+  // TEACHERS (CRUD)
+  // --------------------
+  if (path === "/teachers") {
     await loadView("/frontend/pages/teachers.html");
-    initTeacherController();
+    const mod = await import("../controllers/teacherController.js");
+    mod.initTeacherController();
+    return;
   }
 
-  else {                                         // Optional: 404 page
-    await loadView("/frontend/pages/404.html");
+
+  // --------------------
+  // ENROLLMENTS (CRUD)
+  // --------------------
+  if (path === "/enrollments") {
+    await loadView("/frontend/pages/enrollments.html");
+    const mod = await import("../controllers/enrollmentController.js");
+    mod.initEnrollmentController();
+    return;
   }
+
+  // --------------------
+  // REPORT (JOIN)
+  // --------------------
+  if (path === "/reports/enrollments") {
+    await loadView("/frontend/pages/report_enrollments.html");
+    const mod = await import("../controllers/reportController.js");
+    mod.initEnrollmentReportController();
+    return;
+  }
+
+  // --------------------
+  // DOCS FLOW
+  // --------------------
+  if (path === "/docs/flow") {
+    await loadView("/frontend/pages/flow.html");
+    return;
+  }
+
+  // --------------------
+  // PROFILES DIRECTORY (list)
+  // --------------------
+ // --------------------
+// PROFILES DIRECTORY (list)
+// --------------------
+if (path === "/profiles") {
+    await loadView("/frontend/pages/profiles.html");
+    
+    // FIX: Changed folder from 'controllers' to 'components' 
+    // and ensured filename matches exactly.
+    try {
+        const mod = await import("../components/ProfilesTable.js"); 
+        // Note: Make sure the function you want to call here is the one 
+        // exported in ProfilesTable.js (renderProfilesTable)
+        mod.renderProfilesTable(); 
+    } catch (err) {
+        console.error("Failed to load ProfilesTable component:", err);
+    }
+    return;
 }
 
-// Make links work without page reload
+  // --------------------
+  // PROFILE PAGE (dynamic): /profiles/:id
+  // --------------------
+  if (path.startsWith("/profiles/")) {
+    const idStr = path.split("/")[2]; // "/profiles/1" -> "1"
+    const id = Number(idStr);
+
+    // If invalid id, show 404
+    if (!Number.isInteger(id)) {
+      await loadView("/frontend/pages/404.html");
+      return;
+    }
+
+    await loadView("/frontend/pages/profile.html");
+    const mod = await import("../controllers/profileController.js");
+    mod.initProfileController(id);
+    return;
+  }
+
+  // --------------------
+  // DEFAULT
+  // --------------------
+  await loadView("/frontend/pages/404.html");
+}
+
 export function initRouterEvents() {
   document.addEventListener("click", (e) => {
-    if (e.target.matches("[data-link]")) {
-      e.preventDefault();
-      history.pushState(null, "", e.target.href);
-      router();
-    }
+    const link = e.target.closest("[data-link]");
+    if (!link) return;
+
+    e.preventDefault();
+    history.pushState(null, "", link.getAttribute("href"));
+    router();
   });
 
-  // Back/forward buttons support
   window.addEventListener("popstate", router);
 }
