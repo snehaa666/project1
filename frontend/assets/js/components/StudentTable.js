@@ -20,11 +20,11 @@ export function renderStudentTable(students, { onEdit, onDelete }) {
 
     row.innerHTML = `
       <td class="px-3 py-2">${student.id}</td>
-      <td class="px-3 py-2">${student.mark}</td>
       <td class="px-3 py-2">${student.name}</td>
       <td class="px-3 py-2">${student.email}</td>
       <td class="px-3 py-2">${student.course}</td>
       <td class="px-3 py-2">${student.year}</td>
+      <td class="px-3 py-2">${student.marks}</td>
       <td class="px-3 py-2 flex space-x-2">
         <button data-edit class="bg-yellow-400 px-3 py-1 rounded">Edit</button>
         <button data-delete class="bg-red-500 px-3 py-1 rounded text-white">Delete</button>

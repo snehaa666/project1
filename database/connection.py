@@ -17,6 +17,7 @@ def init_database():
     conn = get_connection()
 
     # 1. Students Table
+    # 1. Students Table
     conn.execute("""
         CREATE TABLE IF NOT EXISTS students (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,6 +25,7 @@ def init_database():
             email TEXT,
             course TEXT,
             year TEXT,
+            marks INTEGER,   -- Added this line
             created_at TEXT,
             updated_at TEXT
         )
@@ -70,7 +72,7 @@ def init_database():
             student_id INTEGER NOT NULL,
             year TEXT NOT NULL,
             subject TEXT NOT NULL,
-            marks INTEGER NOT NULL,
+            mark INTEGER NOT NULL,
             created_at TEXT,
             updated_at TEXT,
             FOREIGN KEY (student_id) REFERENCES students(id)

@@ -52,7 +52,7 @@ from core.middleware import add_cors_headers
 
 # Added /profiles and /enrollments to fix the UI 404s
 # Add "/profiles" to this list to stop the 404 error
-FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/courses", "/profiles", "/enrollments"}
+FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/courses", "/profiles", "/enrollments","/learn-more"}
 
 def handle_ui_routes(handler, path):
     if path in FRONTEND_ROUTES:
@@ -122,14 +122,19 @@ class StudentRouter(BaseHTTPRequestHandler):
             return
 
         # API ROUTES
+        # ---------------------------
+        # STUDENTS
+        # ---------------------------
         if path == "/api/students":
             return get_all_students(self)
 
         if path.startswith("/api/students/"):
-            try:
-                return get_student(self, int(path.split("/")[-1]))
-            except ValueError:
-                return send_404(self)
+            student_id = _last_path_id_or_404(self, path)
+            if student_id is None:
+                return
+            return get_student(self, student_id)
+
+      
 
         if path == "/api/teachers":
             return get_all_teachers(self)
@@ -150,15 +155,15 @@ class StudentRouter(BaseHTTPRequestHandler):
             except ValueError:
                 return send_404(self)
 
-        if path == "/api/marks":
-            return get_all_marks(self)
+        # if path == "/api/marks":
+        #     return get_all_marks(self)
 
-        if path.startswith("/api/marks/students/"):
-            try:
-                student_id = int(path.split("/")[-1])
-                return get_marks_by_student(self, student_id)
-            except ValueError:
-                return send_404(self)
+        # if path.startswith("/api/marks/students/"):
+        #     try:
+        #         student_id = int(path.split("/")[-1])
+        #         return get_marks_by_student(self, student_id)
+        #     except ValueError:
+        #         return send_404(self)
 
         # ENROLLMENTS
         if path == "/api/enrollments":
@@ -178,13 +183,13 @@ class StudentRouter(BaseHTTPRequestHandler):
         return send_404(self)
 
     def do_POST(self):
-        path = self.path # Fixed: Added local path variable
+        path = urlparse(self.path).path # Fixed: Added local path variable
         if path == "/api/students":
             return create_student(self)
         if path == "/api/teachers":
             return create_teacher(self)
-        if path == "/api/marks":
-            return add_mark(self)
+        # if path == "/api/marks":
+        #     return add_mark(self)
         if path == "/api/courses":
             return create_course(self)
         if path == "/api/enrollments":
@@ -192,25 +197,25 @@ class StudentRouter(BaseHTTPRequestHandler):
         return send_404(self)
 
     def do_PUT(self):
-        path = self.path # Fixed: Added local path variable
+        path = urlparse(self.path).path# Fixed: Added local path variable
         if path.startswith("/api/students/"):
             return update_student(self, int(path.split("/")[-1]))
         if path.startswith("/api/teachers/"):
             return update_teacher(self, int(path.split("/")[-1]))
-        if path.startswith("/api/marks/"):
-            return update_mark(self, int(path.split("/")[-1]))
+        # if path.startswith("/api/marks/"):
+        #     return update_mark(self, int(path.split("/")[-1]))
         if path.startswith("/api/courses/"):
             return update_course(self, int(path.split("/")[-1]))
         return send_404(self)
 
     def do_DELETE(self):
-        path = self.path # Fixed: Added local path variable
+        path = urlparse(self.path).path # Fixed: Added local path variable
         if path.startswith("/api/students/"):
             return delete_student(self, int(path.split("/")[-1]))
         if path.startswith("/api/teachers/"):
             return delete_teacher(self, int(path.split("/")[-1]))
-        if path.startswith("/api/marks/"):
-            return delete_mark(self, int(path.split("/")[-1]))
+        # if path.startswith("/api/marks/"):
+        #     return delete_mark(self, int(path.split("/")[-1]))
         if path.startswith("/api/courses/"):
             return delete_course(self, int(path.split("/")[-1]))
         if path.startswith("/api/enrollments/"):

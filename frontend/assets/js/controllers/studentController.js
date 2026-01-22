@@ -32,7 +32,7 @@ export function initStudentController() {
       email: $("email").value.trim(), // Get email value
       course: $("course").value.trim(), // Get course value
       year: $("year").value.trim(),    // Get year value
-      mark: $("mark").value.trim()    // Get mark value
+      marks: $("mark").value.trim()    // Get mark value
     };
 
     // Check the application state to see if we are currently editing an existing record

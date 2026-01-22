@@ -10,7 +10,11 @@ from database.queries import (
 )
 
 def service_get_all():
-    return db_get_all()
+    try:
+        return db_get_all()
+    except Exception as e:
+        print("[ERROR] service_get_all failed:", e)
+        return []
 
 def service_get_one(student_id):
     return db_get_one(student_id)
