@@ -25,7 +25,7 @@ def init_database():
             email TEXT,
             course TEXT,
             year TEXT,
-            marks INTEGER,   -- Added this line
+            marks TEXT,   -- Added this line
             created_at TEXT,
             updated_at TEXT
         )
@@ -84,11 +84,12 @@ def init_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             student_id INTEGER NOT NULL,
             course_id INTEGER NOT NULL,
-            enrolled_on TEXT,
+            teacher_id INTEGER NOT NULL,
             created_at TEXT,
             updated_at TEXT,
             FOREIGN KEY(student_id) REFERENCES students(id),
-            FOREIGN KEY(course_id) REFERENCES courses(id)
+            FOREIGN KEY(course_id) REFERENCES courses(id),
+            FOREIGN KEY(teacher_id) REFERENCES teachers(id)
         )
     """) 
 
