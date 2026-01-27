@@ -24,7 +24,7 @@ export function initCourseController() {
       code: $("code").value.trim(),
       // teacher_name: $("teacher_name").value.trim(),
       fees: Number($("fees").value),
-      duration_weeks: Number($("duration_weeks").value),
+      // duration_weeks: Number($("duration_weeks").value),
     };
 
     const { editingCourseId } = getState();

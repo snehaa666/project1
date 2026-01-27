@@ -55,7 +55,6 @@ export async function router() {
     mod.initCourseController();
     return;
   }
-    // --------------------
   // TEACHERS (CRUD)
   // --------------------
   if (path === "/teachers") {
@@ -64,8 +63,6 @@ export async function router() {
     mod.initTeacherController();
     return;
   }
-
-
   // --------------------
   // ENROLLMENTS (CRUD)
   // --------------------
@@ -97,24 +94,12 @@ export async function router() {
   // --------------------
   // PROFILES DIRECTORY (list)
   // --------------------
- // --------------------
-// PROFILES DIRECTORY (list)
-// --------------------
-if (path === "/profiles") {
+  if (path === "/profiles") {
     await loadView("/frontend/pages/profiles.html");
-    
-    // FIX: Changed folder from 'controllers' to 'components' 
-    // and ensured filename matches exactly.
-    try {
-        const mod = await import("../components/ProfilesTable.js"); 
-        // Note: Make sure the function you want to call here is the one 
-        // exported in ProfilesTable.js (renderProfilesTable)
-        mod.renderProfilesTable(); 
-    } catch (err) {
-        console.error("Failed to load ProfilesTable component:", err);
-    }
+    const mod = await import("../controllers/profilesController.js");
+    mod.initProfilesController();
     return;
-}
+  }
 
   // --------------------
   // PROFILE PAGE (dynamic): /profiles/:id
