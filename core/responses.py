@@ -1,14 +1,24 @@
+# core/responses.py
 # Sends HTTP responses back to the client (JSON or HTML)
 
 import json
 from core.middleware import add_cors_headers
 
-def send_json(handler, status, data):
+def send_json(handler, data, status=200):
+    """
+    Correct signature:
+    - data first
+    - status optional (int)
+    """
+    if not isinstance(status, int):
+        raise TypeError(f"HTTP status must be int, got {type(status)}")
+
     handler.send_response(status)
     add_cors_headers(handler)
     handler.send_header("Content-Type", "application/json")
     handler.end_headers()
     handler.wfile.write(json.dumps(data).encode("utf-8"))
+
 
 def send_404(handler):
     handler.send_response(404)

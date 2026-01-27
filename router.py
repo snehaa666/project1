@@ -46,6 +46,8 @@ from controllers.enrollments import (
     delete_enrollment,
 )
 
+from controllers.report import get_enrollment_report
+
 from core.static import serve_static
 from core.responses import send_404
 from core.middleware import add_cors_headers
