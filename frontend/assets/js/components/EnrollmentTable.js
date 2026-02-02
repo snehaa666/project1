@@ -22,7 +22,7 @@ export function renderEnrollmentTable(enrollments) {
       <td class="px-3 py-2 border">${e.course_id}</td>
       <td class="px-3 py-2 border">${e.enrolled_on ?? ""}</td>
       <td class="px-3 py-2 border">
-        <button class="text-red-600 underline" data-del="${e.id}">Delete</button>
+        <button class="bg-red-500 px-3 py-1 rounded text-white" data-del="${e.id}">Delete</button>
       </td>
     `;
     body.appendChild(tr);

@@ -54,11 +54,20 @@ from core.middleware import add_cors_headers
 
 # Added /profiles and /enrollments to fix the UI 404s
 # Add "/profiles" to this list to stop the 404 error
-FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/courses", "/profiles", "/enrollments","/learn-more"}
+FRONTEND_ROUTES = {"/", "/home", "/students", "/teachers", "/courses", "/profiles", "/enrollments"}
 
 def handle_ui_routes(handler, path):
+     # LEARN MORE PAGE (STATIC)
+    if path == "/learn-more":
+        serve_static(handler, "frontend/pages/learn-more.html")
+        return True
+
     if path in FRONTEND_ROUTES:
         serve_static(handler, "frontend/pages/index.html")
+        return True
+     # HOME PAGE
+    if path == "/" or path == "/home":
+        serve_static(handler, "frontend/pages/home.html")
         return True
 
     if path.endswith(".html"):
@@ -67,6 +76,11 @@ def handle_ui_routes(handler, path):
             serve_static(handler, "frontend/pages/index.html")
             return True
          # Serve assets at /assets/... -> frontend/assets/...
+    #  # LEARN MORE PAGE
+    # if path == "/learn-more":
+    #     serve_static(handler, "frontend/pages/learn-more.html")
+    #     return True
+         
     if path.startswith("/assets/"):
         serve_static(handler, "frontend" + path)
         return True
@@ -83,7 +97,7 @@ def handle_ui_routes(handler, path):
     if path.startswith("/profiles/"):
         serve_static(handler, "frontend/pages/index.html")
         return True
-
+    
     
 
     return False
@@ -156,6 +170,8 @@ class StudentRouter(BaseHTTPRequestHandler):
                 return get_course(self, course_id)
             except ValueError:
                 return send_404(self)
+      
+
 
         # if path == "/api/marks":
         #     return get_all_marks(self)

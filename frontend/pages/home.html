@@ -1,104 +1,119 @@
+<!-- HERO SECTION -->
 <section class="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
-  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat duration-70"
+  <div
+    class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
     style="background-image: url('/frontend/assets/images/university.jpg');">
   </div>
-  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
-  <div class="relative z-10 w-full max-w-5xl px-6 text-center text-white">
-    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">
-      Online Student <span class="text-blue-400">Management System</span>
+
+  <!-- Static gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-indigo-900/60 to-blue-900/70 mix-blend-multiply"></div>
+
+  <div class="relative z-10 w-full max-w-6xl px-6 text-center text-white">
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg">
+      Online Student
+      <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent transition duration-300 hover:from-pink-400 hover:via-purple-400 hover:to-indigo-400">
+        Management System
+      </span>
     </h1>
-    <p class="mx-auto max-w-2xl text-lg md:text-xl font-light text-gray-200 mb-10 leading-relaxed">
+
+    <p class="mx-auto max-w-2xl text-lg md:text-xl text-gray-200 mb-12 leading-relaxed">
       Manage students, teachers, and academic data efficiently from one powerful, integrated platform.
     </p>
-    <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-      <a href="/students" data-link
-        class="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white px-12 py-4 text-sm font-bold text-gray-900 transition-all hover:scale-105 active:scale-95 shadow-xl">
-        <span>View Students</span>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+      <a
+        href="/students"
+        data-link
+        class="group relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 px-14 py-4 text-sm font-bold text-white shadow-2xl transition-all hover:scale-110 hover:shadow-indigo-500/50 hover:from-pink-500 hover:via-purple-600 hover:to-indigo-700 active:scale-95">
+        View Students
       </a>
-      <a href="/teachers" data-link
-        class="inline-flex items-center justify-center rounded-full border-2 border-white/80 px-12 py-4 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white hover:text-gray-900 hover:scale-105 active:scale-95">
+
+      <a
+        href="/teachers"
+        data-link
+        class="inline-flex items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-xl px-14 py-4 text-sm font-bold text-white transition-all hover:bg-gradient-to-r hover:from-white hover:to-gray-200 hover:text-gray-900 hover:scale-110 active:scale-95 shadow-lg">
         For Teachers
       </a>
     </div>
   </div>
 </section>
 
-<section class="bg-gray-50 py-16 md:py-24">
-  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+<!-- ABOUT SECTION -->
+<section class="bg-gradient-to-b from-gray-50 to-white py-20 md:py-28">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
 
-    <div id="about" class="space-y-6">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 relative inline-block">
+    <div id="about" class="space-y-7">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 relative inline-block transition-colors duration-300 hover:text-indigo-600">
         About Us
-        <span class="absolute -bottom-2 left-0 w-16 h-1 bg-blue-500"></span>
+        <span class="absolute -bottom-3 left-0 w-24 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full transition-all duration-300 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-600"></span>
       </h2>
 
       <p class="text-gray-600 leading-relaxed text-lg">
         A student management system is a software application that helps schools manage the administrative tasks
-        associated with running a school or department. Standard features of these systems include tracking student
-        enrollment, scheduling classes, and handling other administrative tasks such as payroll and financial aid.
+        associated with running a school or department. Standard features include student enrollment, class scheduling,
+        payroll, and financial aid handling.
       </p>
 
-      <p class="text-gray-600 leading-relaxed italic">
+      <p class="text-gray-500 leading-relaxed italic border-l-4 border-blue-400 pl-4">
         "Interdum netus dolsa eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed
-        fermentum est vitae rhoncus outlerke. Cum sociis natoque penatibus et magnis montes."
+        fermentum est vitae rhoncus outlerke."
       </p>
 
       <div>
-        <a href="/learn-more"
-   data-link
-   class="inline-block bg-gray-800 text-white px-8 py-3 font-semibold rounded shadow-md hover:bg-gray-700 transition-colors uppercase text-sm tracking-widest">
-  Learn More
-</a>
+        <a
+          href="/learn-more"
+        
+          class="inline-block rounded-full bg-gradient-to-r from-gray-900 via-indigo-900 to-blue-900 text-white px-10 py-4 text-sm font-semibold tracking-widest shadow-lg transition-all hover:scale-110 hover:shadow-indigo-500/40 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700">
+          Learn More
+        </a>
       </div>
     </div>
-    <div class="relative">
-      <div class="rounded-lg overflow-hidden shadow-2xl border-4 border-white">
-        <img alt="Welcome Back to School" class="w-full h-auto object-cover">
-      </div>
-      <div class="absolute -z-10 -bottom-4 -right-4 w-full h-full bg-blue-100 rounded-lg"></div>
+
+   <div class="relative group">
+  <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+  
+  <div class="relative rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20 bg-white/10 backdrop-blur-sm hover:scale-[1.02] transition-all duration-500">
+    <img 
+      src="./assets/images/explain.jpg" 
+      alt="Welcome Back to School" 
+      class="w-full h-auto object-cover min-h-[300px]"
+      onerror="this.src='https://images.unsplash.com/photo-1523050853063-bd8012fec20f?auto=format&fit=crop&q=80&w=800'"
+    >
+  </div>
+</div>
+
+      <div class="absolute -z-10 -bottom-6 -right-6 w-full h-full rounded-2xl bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 blur-xl"></div>
     </div>
   </div>
 </section>
-<footer class="bg-[#4b5a7a] text-gray-200 py-12">
+
+<!-- FOOTER -->
+<footer class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-gray-300 py-16 backdrop-blur-lg">
   <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
 
     <div>
-      <h3 class="text-white text-xl font-bold mb-4 border-b border-gray-500 pb-2 inline-block uppercase">Information
-        Link</h3>
-      <ul class="space-y-3 text-sm">
-        <li class="border-b border-dotted border-gray-500 pb-2"><a href="#"
-            class="hover:text-white transition-colors">Email</a></li>
-        <li class="border-b border-dotted border-gray-500 pb-2"><a href="#"
-            class="hover:text-white transition-colors">Address</a></li>
+      <h3 class="text-white text-xl font-bold mb-6 uppercase tracking-wide transition-colors duration-300 hover:text-blue-400">
+        Information
+        <span class="block w-16 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mt-2 rounded-full transition-all duration-300 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-600"></span>
+      </h3>
 
-        <li class="border-b border-dotted border-gray-500 pb-2"><a href="#"
-            class="hover:text-white transition-colors">Contact</a></li>
-
+      <ul class="space-y-4 text-sm">
+        <li><a href="#" class="hover:text-blue-400 transition-colors">Email</a></li>
+        <li><a href="#" class="hover:text-blue-400 transition-colors">Address</a></li>
+        <li><a href="#" class="hover:text-blue-400 transition-colors">Contact</a></li>
       </ul>
     </div>
 
     <div>
-      <h3 class="text-white text-xl font-bold mb-4 border-b border-gray-500 pb-2 inline-block uppercase">Contact Details
+      <h3 class="text-white text-xl font-bold mb-6 uppercase tracking-wide transition-colors duration-300 hover:text-indigo-400">
+        Contact Details
+        <span class="block w-16 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mt-2 rounded-full transition-all duration-300 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-600"></span>
       </h3>
-      <div class="space-y-4 text-sm text-gray-300">
-        <p class="pb-2 border-b border-dotted border-gray-500">ocfmsinfo@test.com</p>
-        <p class="pb-2 border-b border-dotted border-gray-500">#690 CFG Apartment, Mayur Vihar, Delhi-India.</p>
-        <p class="pb-2 border-b border-dotted border-gray-500">+1234567890</p>
 
-        <div class="pt-4 flex gap-6">
-          <a href="#" class="text-white hover:text-blue-400 transition-all" title="Facebook">
-            <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
-              <path
-                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-            </svg>
-          </a>
-          <a href="#" class="text-white hover:text-pink-400 transition-all" title="Instagram">
-            <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
-              <path
-                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-            </svg>
-          </a>
-        </div>
+      <div class="space-y-4 text-sm">
+        <p class="hover:text-indigo-400 transition-colors">ocfmsinfo@test.com</p>
+        <p class="hover:text-indigo-400 transition-colors">#690 CFG Apartment, Mayur Vihar, Delhi-India.</p>
+        <p class="hover:text-indigo-400 transition-colors">+1234567890</p>
       </div>
     </div>
   </div>

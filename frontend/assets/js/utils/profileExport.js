@@ -13,8 +13,6 @@ export const PROFILE_CSV_COLUMNS = [
   { key: "course_title", label: "Course" },
   { key: "course_code", label: "Code" },
   { key: "teacher_name", label: "Teacher" },
-  { key: "fees", label: "Fees" },
-  { key: "duration_weeks", label: "Weeks" },
   { key: "enrolled_on", label: "Enrolled On" },
 ];
 
@@ -25,7 +23,6 @@ export function normalizeProfileRows(rows) {
     course_title: r.course_title ?? "",
     course_code: r.course_code ?? r.code ?? "",
     teacher_name: r.teacher_name ?? "",
-    fees: r.fees ?? "",
     duration_weeks: r.duration_weeks ?? "",
     enrolled_on: r.enrolled_on ?? "",
   }));
@@ -57,8 +54,6 @@ export function buildProfilePDFHtml(student, rows) {
           <th>Course</th>
           <th>Code</th>
           <th>Teacher</th>
-          <th>Fees</th>
-          <th>Weeks</th>
           <th>Enrolled On</th>
         </tr>
       </thead>
@@ -73,8 +68,6 @@ export function buildProfilePDFHtml(student, rows) {
             <td>${esc(r.course_title)}</td>
             <td>${esc(r.course_code)}</td>
             <td>${esc(r.teacher_name)}</td>
-            <td>${esc(r.fees)}</td>
-            <td>${esc(r.duration_weeks)}</td>
             <td>${esc(r.enrolled_on)}</td>
           </tr>
         `

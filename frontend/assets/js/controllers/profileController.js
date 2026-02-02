@@ -10,7 +10,7 @@ import {
   renderEnrollmentCount,
   renderEnrollmentsTable,
   renderProfileError,
-} from "../components/ProfileView.js";
+} from "../components/profileView.js";
 
 import {
   PROFILE_CSV_COLUMNS,

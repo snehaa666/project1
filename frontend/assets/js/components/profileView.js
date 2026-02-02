@@ -53,8 +53,6 @@ export function renderEnrollmentsTable(rows) {
       <td class="px-3 py-2">${r.course_title ?? "-"}</td>
       <td class="px-3 py-2">${r.course_code ?? r.code ?? "-"}</td>
       <td class="px-3 py-2">${r.teacher_name ?? "-"}</td>
-      <td class="px-3 py-2">${r.fees ?? "-"}</td>
-      <td class="px-3 py-2">${r.duration_weeks ?? "-"}</td>
       <td class="px-3 py-2">${r.enrolled_on ?? "-"}</td>
     `;
     body.appendChild(tr);
